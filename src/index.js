@@ -30,7 +30,10 @@ var $rdf = {
   UpdatesVia: require('./updates-via').UpdatesVia,
   uri: require('./uri'),
   Util: require('./util'),
-  Variable: require('./variable')
+  Variable: require('./variable'),
+
+  // TODO Temporary - will later move to npm package solid-safenetwork
+  SafenetworkLDP: require('./safenetwork-solid'),
 }
 
 $rdf.IndexedFormula = $rdf.Store // Alias

@@ -1,0 +1,1 @@
+/home/mrh/src/solid/solid-safenetwork/src/safenetwork-solid.js
