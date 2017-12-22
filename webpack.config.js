@@ -24,7 +24,8 @@ module.exports = {
     'node-fetch': 'fetch',
     'xmldom': 'window'
   },
-  devtool: 'source-map',
+  devtool: '#source-map',
+//makes dodgy source map(no bp etc)  devtool: '#exval-source-map',
   plugins: [
     new MinifyPlugin({ deadcode: false })
   ]

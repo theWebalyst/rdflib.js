@@ -31,6 +31,7 @@ const RDFParser = require('./rdfxmlparser')
 const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
+const safeFetch = require('./safenetwork-solid').protoFetch
 
 const Parsable = {
   'text/n3': true,
@@ -414,14 +415,15 @@ class Fetcher {
     this.timeout = options.timeout || 30000
 
     this._fetch = options.fetch
-
+console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
     if (!this._fetch) {
       if (typeof window !== 'undefined') {
-        this._fetch = window.fetch.bind(window)
+        this._fetch = safeFetch // Extends fetch for safe: protocol
       } else {
         this._fetch = require('node-fetch')
       }
     }
+console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
 
     this.appNode = this.store.bnode() // Denoting this session
     this.store.fetcher = this // Bi-linked
@@ -727,6 +729,7 @@ class Fetcher {
    * @returns {Promise<Object>} fetch() result or an { error, status } object
    */
   fetchUri (docuri, options) {
+    console.log('[safe-tmp] fetchUri('+docuri+','+options+')')
     if (!docuri) {
       return Promise.reject(new Error('Cannot fetch an empty uri'))
     }
@@ -855,6 +858,7 @@ class Fetcher {
    * @returns {Promise<Object>}
    */
   failFetch (options, errorMessage, statusCode) {
+    console.log('[safe-tmp] failFetch('+options+','+errorMessage+','+statusCode+')')
     this.addStatus(options.req, errorMessage)
 
     if (!options.noMeta) {
@@ -939,6 +943,7 @@ class Fetcher {
   }
 
   doneFetch (options, response) {
+    console.log('[safe-tmp] doneFetch('+options+','+response+')')
     this.addStatus(options.req, 'Done.')
     this.requested[options.original.uri] = 'done'
 
@@ -1017,6 +1022,7 @@ class Fetcher {
    * @returns {Promise<Response>}
    */
   createContainer (parentURI, folderName, data) {
+    console.log('[safe-tmp] createContainer('+parentURI+','+folderName+',"'+data+'")')
     let headers = {
       // Force the right mime type for containers
       'content-type': 'text/turtle',
@@ -1046,6 +1052,7 @@ class Fetcher {
    * @returns {Promise<Response>}
    */
   webOperation (method, uri, options = {}) {
+    console.log('[safe-tmp] webOperation('+method+','+docuri+','+options+')')
     options.method = method
     options.body = options.data || options.body
     options.force = true
