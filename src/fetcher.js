@@ -36,7 +36,8 @@ const RDFParser = require('./rdfxmlparser')
 const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
-const safeFetch = require('./safenetwork-solid').protoFetch
+// TODO remove:
+//const safeFetch = require('./safenetwork-webapi').protoFetch
 
 // This is a special fetch which does OIDC auth, catching 401 errors
 const {fetch} = (typeof window === "undefined")
@@ -431,7 +432,11 @@ class Fetcher {
 console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
     if (!this._fetch) {
       if (typeof window !== 'undefined') {
-        this._fetch = safeFetch // Extends fetch for safe: protocol
+        // Extend fetch for safe: protocol
+        // TODO how to obtain SAFE protoFetch ?
+        // this._fetch = safeFetch
+        // TODO temp for testing:
+        this._fetch = $rdf.SafenetworkLDP.protoFetch.bind($rdf.SafenetworkLDP)
       } else {
         this._fetch = require('node-fetch')
       }
