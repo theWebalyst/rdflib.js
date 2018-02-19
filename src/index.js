@@ -35,7 +35,7 @@ var $rdf = {
   Variable: require('./variable'),
 
   // TODO Temporary - will later move to npm package solid-safenetwork
-  SafenetworkLDP: require('./safenetwork-solid'),
+//  SafenetworkLDP: require('./safenetwork-webapi'),
 }
 
 $rdf.NextId = $rdf.BlankNode.nextId
