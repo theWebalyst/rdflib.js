@@ -32,7 +32,7 @@ const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
 // TODO remove:
-//const safeFetch = require('./safenetwork-webapi').protoFetch
+const safeFetch = require('./safenetwork-webapi').protoFetch
 
 const Parsable = {
   'text/n3': true,
@@ -416,19 +416,20 @@ class Fetcher {
     this.timeout = options.timeout || 30000
 
     this._fetch = options.fetch
-//console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
+//console.log('rdflib:fetcher safeFetch: '+safeFetch.toString())
     if (!this._fetch) {
       if (typeof window !== 'undefined') {
         // Extend fetch for safe: protocol
         // TODO how to obtain SAFE protoFetch ?
         // this._fetch = safeFetch
         // TODO temp for testing:
-        this._fetch = $rdf.SafenetworkLDP.protoFetch.bind($rdf.SafenetworkLDP)
+        safeFetch.protocols.safe = $rdf.SafenetworkLDP.fetch.bind($rdf.SafenetworkLDP)
+        this._fetch = safeFetch
       } else {
         this._fetch = require('node-fetch')
       }
     }
-console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
+console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
 
     this.appNode = this.store.bnode() // Denoting this session
     this.store.fetcher = this // Bi-linked
@@ -734,7 +735,7 @@ console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
    * @returns {Promise<Object>} fetch() result or an { error, status } object
    */
   fetchUri (docuri, options) {
-    console.log('[safe-tmp] fetchUri('+docuri+','+options+')')
+    console.log('rdflib:fetcher fetchUri('+docuri+','+options+') METHOD: ',options.method)
     if (!docuri) {
       return Promise.reject(new Error('Cannot fetch an empty uri'))
     }
@@ -863,7 +864,7 @@ console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
    * @returns {Promise<Object>}
    */
   failFetch (options, errorMessage, statusCode) {
-    console.log('[safe-tmp] failFetch('+options+','+errorMessage+','+statusCode+')')
+    console.log('rdflib:fetcher failFetch('+options+','+errorMessage+','+statusCode+')')
     this.addStatus(options.req, errorMessage)
 
     if (!options.noMeta) {
@@ -948,7 +949,7 @@ console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
   }
 
   doneFetch (options, response) {
-    console.log('[safe-tmp] doneFetch('+options+','+response+')')
+    console.log('rdflib:fetcher doneFetch('+options+','+response+')')
     this.addStatus(options.req, 'Done.')
     this.requested[options.original.uri] = 'done'
 
@@ -1027,7 +1028,7 @@ console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
    * @returns {Promise<Response>}
    */
   createContainer (parentURI, folderName, data) {
-    console.log('[safe-tmp] createContainer('+parentURI+','+folderName+',"'+data+'")')
+    console.log('rdflib:fetcher createContainer('+parentURI+','+folderName+',"'+data+'")')
     let headers = {
       // Force the right mime type for containers
       'content-type': 'text/turtle',
@@ -1057,7 +1058,7 @@ console.log('[safe-tmp] this._fetch: '+this._fetch.toString())
    * @returns {Promise<Response>}
    */
   webOperation (method, uri, options = {}) {
-    console.log('[safe-tmp] webOperation('+method+','+docuri+','+options+')')
+    console.log('rdflib:fetcher webOperation('+method+','+docuri+','+options+')')
     options.method = method
     options.body = options.data || options.body
     options.force = true
