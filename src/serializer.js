@@ -549,7 +549,10 @@ var Serializer = (function () {
     }
     if (j >= 0 && this.flags.indexOf('p') < 0 &&
       // Can split at namespace but only if http[s]: URI or file: or ws[s] (why not others?)
-      (uri.indexOf('http') === 0 || uri.indexOf('ws') === 0 || uri.indexOf('file') === 0)) {
+      (uri.indexOf('http') === 0 ||
+        uri.indexOf('ws') === 0 ||
+        uri.indexOf('file') === 0 ||
+        uri.indexOf('safe') === 0)) {
       var canSplit = true
       for (var k = j + 1; k < uri.length; k++) {
         if (__Serializer.prototype._notNameChars.indexOf(uri[k]) >= 0) {
