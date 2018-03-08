@@ -31,8 +31,6 @@ const RDFParser = require('./rdfxmlparser')
 const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
-// TODO remove:
-const safeFetch = require('./safenetwork-webapi').protoFetch
 
 const Parsable = {
   'text/n3': true,
@@ -416,15 +414,12 @@ class Fetcher {
     this.timeout = options.timeout || 30000
 
     this._fetch = options.fetch
-//console.log('rdflib:fetcher safeFetch: '+safeFetch.toString())
     if (!this._fetch) {
       if (typeof window !== 'undefined') {
-        // Extend fetch for safe: protocol
-        // TODO how to obtain SAFE protoFetch ?
-        // this._fetch = safeFetch
-        // TODO temp for testing:
-        safeFetch.protocols.safe = $rdf.SafenetworkLDP.fetch.bind($rdf.SafenetworkLDP)
-        this._fetch = safeFetch
+        if ( $rdf && $rdf.appFetch )
+          // Web app can set $rdf.appFetch (e.g. to protoFetch)
+          // E.g. used to support Safe Network 'safe:' protocol
+          this._fetch = $rdf.appFetch
       } else {
         this._fetch = require('node-fetch')
       }
@@ -1163,7 +1158,8 @@ console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
     kb.add(responseNode, ns.http('statusText'),
       kb.literal(response.statusText), responseNode)
 
-    if (!options.resource.uri.startsWith('http')) {
+    if (!options.resource.uri.startsWith('http') &&
+        !options.resource.uri.startsWith('safe:')) {
       return responseNode
     }
 
