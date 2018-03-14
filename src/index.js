@@ -30,7 +30,7 @@ var $rdf = {
   UpdatesVia: require('./updates-via').UpdatesVia,
   uri: require('./uri'),
   Util: require('./util'),
-  Variable: require('./variable'),
+  Variable: require('./variable')
 }
 
 $rdf.IndexedFormula = $rdf.Store // Alias
