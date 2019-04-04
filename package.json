@@ -59,9 +59,14 @@
     "rimraf": "^2.6.3",
     "sinon": "^2.3.6",
     "sinon-chai": "^2.11.0",
+<<<<<<< HEAD
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "wrapper-webpack-plugin": "^2.1.0"
+=======
+    "webpack": "^2.5.1",
+    "webpack-sources": "1.0.1"
+>>>>>>> e688009e954d538d5ffb7fdda03226a8e705f717
   },
   "scripts": {
     "build": "babel src -d lib",
