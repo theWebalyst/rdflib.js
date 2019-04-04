@@ -945,13 +945,8 @@ console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
    *
    * @returns {Promise<Object>}
    */
-<<<<<<< HEAD
   failFetch (options, errorMessage, statusCode, response) {
-    console.log('[safe-tmp] failFetch('+options+','+errorMessage+','+statusCode+')')
-=======
-  failFetch (options, errorMessage, statusCode) {
     console.log('rdflib:fetcher failFetch('+options+','+errorMessage+','+statusCode+')')
->>>>>>> WIP - milestone-04 debugging turtle (GET container)
     this.addStatus(options.req, errorMessage)
 
     if (!options.noMeta) {
@@ -1157,12 +1152,8 @@ console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
    * @returns {Promise<Response>}
    */
   webOperation (method, uri, options = {}) {
-<<<<<<< HEAD
     uri = uri.uri || uri // Allow a NamedNode to be passed as it is very common
-    console.log('[safe-tmp] webOperation('+method+','+docuri+','+options+')')
-=======
     console.log('rdflib:fetcher webOperation('+method+','+docuri+','+options+')')
->>>>>>> WIP - milestone-04 debugging turtle (GET container)
     options.method = method
     options.body = options.data || options.body
     options.force = true
