@@ -426,12 +426,8 @@ class Fetcher {
     this.store = store || new IndexedFormula()
     this.timeout = options.timeout || 30000
 
-<<<<<<< HEAD
     this._fetch = options.fetch || fetch
 console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
-=======
-    this._fetch = options.fetch
->>>>>>> e688009e954d538d5ffb7fdda03226a8e705f717
     if (!this._fetch) {
       if (typeof window !== 'undefined') {
         if ( $rdf && $rdf.appFetch )
@@ -949,16 +945,8 @@ console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
    *
    * @returns {Promise<Object>}
    */
-<<<<<<< HEAD
   failFetch (options, errorMessage, statusCode, response) {
     console.log('[safe-tmp] failFetch('+options+','+errorMessage+','+statusCode+')')
-=======
-  failFetch (options, errorMessage, statusCode) {
-    console.log('rdflib:fetcher failFetch('+options+','+errorMessage+','+statusCode+')')
-<<<<<<< HEAD
->>>>>>> WIP - milestone-04 debugging turtle (GET container)
-=======
->>>>>>> e688009e954d538d5ffb7fdda03226a8e705f717
     this.addStatus(options.req, errorMessage)
 
     if (!options.noMeta) {
@@ -1164,16 +1152,8 @@ console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
    * @returns {Promise<Response>}
    */
   webOperation (method, uri, options = {}) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     uri = uri.uri || uri // Allow a NamedNode to be passed as it is very common
     console.log('[safe-tmp] webOperation('+method+','+docuri+','+options+')')
-=======
-    console.log('rdflib:fetcher webOperation('+method+','+docuri+','+options+')')
->>>>>>> WIP - milestone-04 debugging turtle (GET container)
-=======
-    console.log('rdflib:fetcher webOperation('+method+','+docuri+','+options+')')
->>>>>>> e688009e954d538d5ffb7fdda03226a8e705f717
     options.method = method
     options.body = options.data || options.body
     options.force = true

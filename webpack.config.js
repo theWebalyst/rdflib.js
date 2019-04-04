@@ -1,7 +1,6 @@
 const path = require('path')
 const WrapperPlugin = require('wrapper-webpack-plugin');
 
-<<<<<<< HEAD
 module.exports = (env, args) => {
   return {
     mode: 'production',
@@ -53,34 +52,4 @@ module.exports = (env, args) => {
     },
     devtool: 'source-map'
   }
-=======
-module.exports = {
-  entry: [
-    './src/index.js'
-  ],
-  output: {
-    path: path.join(__dirname, '/dist/'),
-    filename: 'rdflib.min.js',
-    library: '$rdf',
-    libraryTarget: 'umd'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-      }
-    ]
-  },
-  externals: {
-    'node-fetch': 'fetch',
-    'xmldom': 'window'
-  },
-  devtool: '#source-map',
-//makes dodgy source map(no bp etc)  devtool: '#exval-source-map',
-  plugins: [
-    new MinifyPlugin({ deadcode: false })
-  ]
->>>>>>> e688009e954d538d5ffb7fdda03226a8e705f717
 }
