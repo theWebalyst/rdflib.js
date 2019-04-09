@@ -428,15 +428,15 @@ class Fetcher {
 
     this._fetch = options.fetch || fetch
 console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
-    if (!this._fetch) {
-      if (typeof window !== 'undefined') {
-        if ( $rdf && $rdf.appFetch )
-          // Web app can set $rdf.appFetch (e.g. to protoFetch)
-          // E.g. used to support Safe Network 'safe:' protocol
-          this._fetch = $rdf.appFetch
-      } else {
-        this._fetch = require('node-fetch')
+    if (!this._fetch && typeof window === 'undefined') {
+      if ( $rdf && $rdf.appFetch ) {
+        // Web app can set $rdf.appFetch (e.g. to protoFetch in order
+        // to support other protocols such as Safe Network 'safe:')
+        this._fetch = $rdf.appFetch
       }
+    }
+    if (!this._fetch) {
+      throw new Error('No _fetch function availble for Fetcher')
     }
 console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
 
