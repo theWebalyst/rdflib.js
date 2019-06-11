@@ -37,10 +37,22 @@ const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
 
-// This is a special fetch which does OIDC auth, catching 401 errors
-const {fetch} = (typeof window === "undefined")
+// authFetch is a fetch which does OIDC auth, catching 401 errors
+const {authFetch} = (typeof window === "undefined")
          ? require('solid-auth-cli')
          : require('solid-auth-client');
+
+// safeFetch is a fetch which handles safe: protocol URIs
+const safeFetch = require('safenetworkjs').safeJs.fetch.bind(safeJs)
+
+const protoFetch = require('proto-fetch')
+
+// map protocols to corresponding fetch()
+const fetch = protoFetch({
+  http: authFetch,
+  https: authFetch,
+  safe: safeFetch
+})
 
 const Parsable = {
   'text/n3': true,
@@ -427,18 +439,10 @@ class Fetcher {
     this.timeout = options.timeout || 30000
 
     this._fetch = options.fetch || fetch
-console.log('[safe-tmp] safeFetch: '+safeFetch.toString())
-    if (!this._fetch && typeof window === 'undefined') {
-      if ( $rdf && $rdf.appFetch ) {
-        // Web app can set $rdf.appFetch (e.g. to protoFetch in order
-        // to support other protocols such as Safe Network 'safe:')
-        this._fetch = $rdf.appFetch
-      }
-    }
+
     if (!this._fetch) {
       throw new Error('No _fetch function availble for Fetcher')
     }
-console.log('rdflib:fetcher this._fetch: '+this._fetch.toString())
 
     this.appNode = this.store.bnode() // Denoting this session
     this.store.fetcher = this // Bi-linked
