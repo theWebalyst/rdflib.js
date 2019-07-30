@@ -37,22 +37,11 @@ const Uri = require('./uri')
 const Util = require('./util')
 const serialize = require('./serialize')
 
-// authFetch is a fetch which does OIDC auth, catching 401 errors
-const {authFetch} = (typeof window === "undefined")
+const sac = (typeof window === "undefined")
          ? require('solid-auth-cli')
          : require('solid-auth-client');
 
-// safeFetch is a fetch which handles safe: protocol URIs
-const safeFetch = require('safenetworkjs').safeJs.fetch.bind(safeJs)
-
-const protoFetch = require('proto-fetch')
-
-// map protocols to corresponding fetch()
-const fetch = protoFetch({
-  http: authFetch,
-  https: authFetch,
-  safe: safeFetch
-})
+const fetch = sac.fetch // this fetch does OIDC auth, catching 401 errors
 
 const Parsable = {
   'text/n3': true,
